@@ -1,7 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <memory>
+#include "Entity.h"
 class Game
 {
 private:
@@ -12,8 +10,10 @@ private:
 	sf::Clock dtClock;
 	float dt;
 
-
+	//init functions
 	void initWindow();
+	
+	
 	void updateSfmlEvent();
 
 
@@ -21,8 +21,10 @@ public:
 	Game();
 	~Game();
 
+	//update functions
+	void update();
 
-	void uptade();
+
 	void render();
 	void run();
 };

@@ -7,10 +7,10 @@ void Game::initWindow()
 
 void Game::updateSfmlEvent()
 {
-	while (this->window.get()->pollEvent(e))
+	while (this->window->pollEvent(e))
 	{
 		if(this->e.type == sf::Event::Closed)
-			this->window.get()->close();
+			this->window->close();
 	}
 }
 
@@ -24,7 +24,7 @@ Game::~Game()
 {
 }
 
-void Game::uptade()
+void Game::update()
 {
 	this->dt = this->dtClock.restart().asSeconds();
 	this->updateSfmlEvent();
@@ -32,16 +32,16 @@ void Game::uptade()
 
 void Game::render()
 {
-	this->window.get()->clear(sf::Color(213, 41, 76));
+	this->window->clear(sf::Color(213, 41, 76));
 
-	this->window.get()->display();
+	this->window->display();
 }
 
 void Game::run()
 {
-	while (this->window.get()->isOpen())
+	while (this->window->isOpen())
 	{
-		this->uptade();
+		this->update();
 		this->render();
 	}
 }
