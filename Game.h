@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "CrystalBowl.h"
-
+#include "Character.h"
 
 class Game
 {

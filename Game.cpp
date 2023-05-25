@@ -10,11 +10,16 @@ void Game::initGame()
 	std::unique_ptr<Entity> background(new Entity("background"));
 	this->entities.emplace_back(std::move(background));
 
+	
 	std::unique_ptr<Entity> bowl(new CrystalBowl());
 	bowl->setPosition(this->window->getSize().x / 2 - bowl->getGlobalBounds().width / 2,
 		this->window->getSize().y / 2 - bowl->getGlobalBounds().height / 2);
 	this->entities.emplace_back(std::move(bowl));
 	
+
+	std::unique_ptr<Entity> character(new Character());
+	this->entities.emplace_back(std::move(character));
+
 }
 
 void Game::updateSfmlEvent()
