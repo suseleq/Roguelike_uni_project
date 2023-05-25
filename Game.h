@@ -1,9 +1,14 @@
 #pragma once
 #include "Entity.h"
+#include "CrystalBowl.h"
+
+
 class Game
 {
 private:
 	std::unique_ptr<sf::RenderWindow> window;
+
+	std::vector<std::unique_ptr<Entity>> entities;
 
 
 	sf::Event e;
@@ -12,7 +17,7 @@ private:
 
 	//init functions
 	void initWindow();
-	
+	void initGame();
 	
 	void updateSfmlEvent();
 
