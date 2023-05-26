@@ -20,6 +20,8 @@ void Character::initTexture()
 void Character::initHitbox()
 {
 	this->hitbox = std::make_unique<Hitbox>(*this, 37, 33, 20, 35);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 60);
+	this->circle->setFillColor(sf::Color(96, 161, 101, 110));
 }
 
 void Character::initAnimations()
@@ -51,6 +53,7 @@ void Character::update(const float& dt)
 		this->animations["IDLE"]->makeAnimation(dt);
 
 	this->hitbox->uptade();
+	this->circle->uptade();
 }
 
 

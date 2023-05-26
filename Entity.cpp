@@ -69,7 +69,12 @@ void Entity::render(sf::RenderTarget& target)
 {
 	if (this->circle != nullptr)
 	{
-		target.draw(*this->circle);
+		this->circle->render(target);
 	}
+	
 	target.draw(*this);
+	if (this->hitbox != nullptr)
+	{
+		this->hitbox->render(target);
+	}
 }

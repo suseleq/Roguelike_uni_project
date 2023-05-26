@@ -2,8 +2,8 @@
 
 void CrystalBowl::initStats()
 {
-	this->circle = std::make_unique<sf::CircleShape>(120);
-	this->circle->setFillColor(sf::Color(195, 255, 200));
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 120);
+	this->circle->setFillColor(sf::Color(195, 255, 200, 100));
 }
 
 void CrystalBowl::initTexture()
@@ -22,9 +22,9 @@ void CrystalBowl::initAnimations()
 
 CrystalBowl::CrystalBowl()
 {
-	this->initStats();
 	this->initTexture();
 	this->initAnimations();
+	this->initStats();
 }
 
 CrystalBowl::~CrystalBowl()
@@ -34,6 +34,5 @@ CrystalBowl::~CrystalBowl()
 void CrystalBowl::update(const float& dt)
 {
 	this->animations["IDLE"]->makeAnimation(dt);
-	this->circle->setPosition(this->getPosition().x - this->circle->getGlobalBounds().height / 2 + this->getGlobalBounds().width / 2,
-		this->getPosition().y - this->circle->getGlobalBounds().height / 2 + this->getGlobalBounds().height / 2);
+	this->circle->uptade();
 }

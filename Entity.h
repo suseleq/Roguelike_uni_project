@@ -1,14 +1,16 @@
 #pragma once
 #include "Animations.h"
-#include <memory>
+#include "Circle.h"
 #include "Hitbox.h"
+#include <memory>
 #include <map>
+
 
 class Entity : public sf::Sprite
 {
 protected:
 	
-	std::unique_ptr<sf::CircleShape> circle;
+	std::unique_ptr<Circle> circle;
 	std::unique_ptr<sf::Texture> texture;
 	std::unique_ptr<Hitbox> hitbox;
 	std::map<std::string, std::unique_ptr<Animations>> animations;
