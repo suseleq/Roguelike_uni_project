@@ -24,6 +24,8 @@ Entity::Entity()
 	this->velocity = 0.f;
 	this->hitbox = nullptr;
 	this->texture = nullptr;
+	this->cooldownAttack = 0.f;
+	this->maxCooldownAttack = 0.f;
 }
 
 
@@ -45,6 +47,10 @@ Entity::~Entity()
 {
 }
 
+void Entity::attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets)
+{
+}
+
 void Entity::update(const float& dt)
 {
 }
@@ -58,11 +64,6 @@ void Entity::setIsMoving(bool moving)
 bool Entity::getIsMoving()
 {
 	return this->isMoving;
-}
-
-
-void Entity::attack(const sf::Vector2f& direction)
-{
 }
 
 void Entity::render(sf::RenderTarget& target)

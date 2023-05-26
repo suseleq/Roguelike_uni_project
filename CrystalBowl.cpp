@@ -2,7 +2,7 @@
 
 void CrystalBowl::initStats()
 {
-	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 120);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 110);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 100));
 }
 
@@ -12,7 +12,7 @@ void CrystalBowl::initTexture()
 	this->texture->loadFromFile("./Textures/magicBowl.png");
 	this->setTexture(*this->texture);
 	this->setTextureRect(sf::IntRect(0, 0, 32, 32));
-	this->scale(1.5f, 1.5f);
+	this->scale(1.3f, 1.3f);
 }
 
 void CrystalBowl::initAnimations()

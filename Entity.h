@@ -2,6 +2,8 @@
 #include "Animations.h"
 #include "Circle.h"
 #include "Hitbox.h"
+#include "Bullet.h"
+#include <vector>
 #include <memory>
 #include <map>
 
@@ -18,6 +20,10 @@ protected:
 	int health;
 	bool isMoving;
 	float velocity;
+	float maxCooldownAttack;
+	float cooldownAttack;
+
+
 
 	virtual void initStats();
 	virtual void initTexture();
@@ -36,7 +42,7 @@ public:
 	bool getIsMoving();
 
 	//void setPosition(const sf::Vector2f& position);
-	virtual void attack(const sf::Vector2f& direction);
+	virtual void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 	
 	virtual void update(const float& dt);
 	virtual void render(sf::RenderTarget& target);

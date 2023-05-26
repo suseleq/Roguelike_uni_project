@@ -8,6 +8,10 @@ private:
 	void initTexture();
 	void initHitbox();
 	void initAnimations();
+
+	void moving(const float& dt);
+
+	void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 public:
 	Character();
 	~Character();

@@ -1,7 +1,9 @@
 #pragma once
 #include "Animations.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
-class Hitbox : sf::RectangleShape
+class Hitbox : public sf::RectangleShape
 {
 private:
 
