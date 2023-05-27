@@ -41,10 +41,14 @@ public:
 	void setIsMoving(bool moving);
 	bool getIsMoving();
 
+	sf::FloatRect getCircleBounds();
+	sf::FloatRect getHitboxBounds();
+
 	//void setPosition(const sf::Vector2f& position);
 	virtual void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 	
 	virtual void update(const float& dt);
+	virtual void update(const float& dt, const sf::Vector2f& direction);
 	virtual void render(sf::RenderTarget& target);
 };
 

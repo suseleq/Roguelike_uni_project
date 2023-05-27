@@ -18,18 +18,22 @@ void Game::initGame()
 	this->entities.emplace_back(std::move(bowl));
 	
 
-	std::unique_ptr<Entity> character(new Character());
-	this->entities.emplace_back(std::move(character));
+	this->character = std::make_unique<Character>();
+	this->character->setPosition(this->window->getSize().x / 2,
+		this->window->getSize().y / 2 );
 
 }
 
 void Game::updateEntities()
 {
+	this->character->update(this->dt);
 	for (auto& i : this->entities)
 	{
 		i->update(this->dt);
 		i->attack(mousePosition, this->bullets);
+		this->character->circleIntersection(i->getCircleBounds());
 	}
+	this->character->attack(mousePosition, this->bullets);
 }
 
 void Game::updateBullets()
@@ -90,10 +94,12 @@ void Game::update()
 void Game::render()
 {
 	this->window->clear(sf::Color(213, 41, 76));
+	
 	for (auto& i : this->entities)
 	{
 		i->render(*this->window);
 	}
+	this->character->render(*this->window);
 	for (auto& i : this->bullets)
 	{
 		i->render(*this->window);

@@ -1,8 +1,9 @@
 #include "Character.h"
-
+#include <iostream>
 
 void Character::initStats()
 {
+	this->canAttack = false;
 	this->health = 3;
 	this->cooldownAttack = 200.f;
 	this->maxCooldownAttack = 200.f;
@@ -64,9 +65,23 @@ void Character::moving(const float& dt)
 	}
 }
 
+void Character::circleIntersection(const sf::FloatRect& bounds)
+{
+
+	if (this->hitbox->getGlobalBounds().intersects(bounds))
+	{
+		this->canAttack = true;
+	}
+}
+
+void Character::setCanAttack(bool cA)
+{
+	this->canAttack = cA;
+}
+
 void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr<Bullet>>& bullets)
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack) 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack && this->canAttack) 
 	{
 		sf::Vector2f direction(directionMouse.x - this->getPosition().x, directionMouse.y - this->getPosition().y);
 		float length = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
@@ -95,6 +110,7 @@ Character::~Character()
 
 void Character::update(const float& dt)
 {
+	this->canAttack = false;
 	if(this->cooldownAttack < this->maxCooldownAttack)
 	{
 		this->cooldownAttack += 100 * dt;

@@ -55,6 +55,10 @@ void Entity::update(const float& dt)
 {
 }
 
+void Entity::update(const float& dt, const sf::Vector2f& direction)
+{
+}
+
 
 void Entity::setIsMoving(bool moving)
 {
@@ -64,6 +68,24 @@ void Entity::setIsMoving(bool moving)
 bool Entity::getIsMoving()
 {
 	return this->isMoving;
+}
+
+sf::FloatRect Entity::getCircleBounds()
+{
+	if (this->circle != nullptr)
+	{
+		return this->circle->getGlobalBounds();
+	}
+	return sf::FloatRect(0, 0, 0, 0);
+}
+
+sf::FloatRect Entity::getHitboxBounds()
+{
+	if (this->hitbox != nullptr)
+	{
+		return this->hitbox->getGlobalBounds();
+	}
+	return sf::FloatRect(0, 0, 0, 0);
 }
 
 void Entity::render(sf::RenderTarget& target)

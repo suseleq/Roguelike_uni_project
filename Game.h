@@ -13,6 +13,7 @@ private:
 
 	std::vector<std::unique_ptr<Entity>> entities;
 	std::vector<std::unique_ptr<Bullet>> bullets;
+	std::unique_ptr<Character> character;
 
 	sf::Event e;
 	sf::Clock dtClock;

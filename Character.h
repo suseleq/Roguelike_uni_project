@@ -4,6 +4,8 @@
 class Character : public Entity
 {
 private:
+	bool canAttack;
+
 	void initStats();
 	void initTexture();
 	void initHitbox();
@@ -11,11 +13,13 @@ private:
 
 	void moving(const float& dt);
 
-	void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 public:
 	Character();
 	~Character();
 
+	void circleIntersection(const sf::FloatRect& bounds);
+	void setCanAttack(bool cA);
+	void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 	void update(const float& dt);
 };
 
