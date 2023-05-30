@@ -13,5 +13,7 @@ public:
 	~CrystalBowl();
 
 	virtual void update(const float& dt) override;
+	virtual void update(const sf::Vector2f& direction, const float& dt) override;
+
 };
 

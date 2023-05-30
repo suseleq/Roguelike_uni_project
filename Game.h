@@ -1,4 +1,5 @@
 #pragma once
+#include "Slime.h"
 #include "Entity.h"
 #include "CrystalBowl.h"
 #include "Character.h"
@@ -29,7 +30,6 @@ private:
 	void updateBullets();
 	void updateSfmlEvent();
 
-	sf::Vector2f normalizeVector(sf::Vector2i& v);
 
 public:
 	Game();

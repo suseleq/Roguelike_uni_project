@@ -8,30 +8,57 @@ void Game::initWindow()
 
 void Game::initGame()
 {
-	std::unique_ptr<Entity> background(new Entity("background"));
-	this->entities.emplace_back(std::move(background));
-
 	
 	std::unique_ptr<Entity> bowl(new CrystalBowl());
 	bowl->setPosition(this->window->getSize().x / 2 - bowl->getGlobalBounds().width / 2,
 		this->window->getSize().y / 2 - bowl->getGlobalBounds().height / 2);
 	this->entities.emplace_back(std::move(bowl));
-	
+	std::unique_ptr<Entity> slime(new Slime());
+	this->entities.emplace_back(std::move(slime));
+
 
 	this->character = std::make_unique<Character>();
 	this->character->setPosition(this->window->getSize().x / 2,
 		this->window->getSize().y / 2 );
+	this->character->setScreenBounds(sf::FloatRect(0, 0, this->window->getSize().x, this->window->getSize().y));
 
 }
 
 void Game::updateEntities()
 {
 	this->character->update(this->dt);
-	for (auto& i : this->entities)
+	for (auto entity = this->entities.begin(); entity != this->entities.end();)
 	{
-		i->update(this->dt);
-		i->attack(mousePosition, this->bullets);
-		this->character->circleIntersection(i->getCircleBounds());
+		bool isDead = false;
+		for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
+		{
+			bullet->get()->uptade(dt);
+			if (bullet->get()->getGlobalBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
+			{
+				bullet = this->bullets.erase(bullet);
+				entity->get()->setHealth();
+				if (entity->get()->getHealth() <= 0)
+				{
+					isDead = true;
+				}
+			}
+			else
+			{
+				++bullet;
+			}
+		}
+		if (isDead)
+		{
+			entity = this->entities.erase(entity);
+		}
+		else
+		{
+			entity->get()->update(sf::Vector2f(this->character->getPosition().x + this->character->getGlobalBounds().width / 2,
+				this->character->getPosition().y + this->character->getGlobalBounds().height / 2), this->dt);
+			entity->get()->attack(mousePosition, this->bullets);
+			this->character->circleIntersection(entity->get()->getCircleBounds());
+			++entity;
+		}
 	}
 	this->character->attack(mousePosition, this->bullets);
 }
@@ -63,11 +90,7 @@ void Game::updateSfmlEvent()
 	}
 }
 
-sf::Vector2f Game::normalizeVector(sf::Vector2i& v)
-{
-	float length = sqrt(pow(v.x, 2) + pow(v.y, 2));
-	return sf::Vector2f(v.x / length, v.y / length);
-}
+
 
 Game::Game()
 {
@@ -93,7 +116,7 @@ void Game::update()
 
 void Game::render()
 {
-	this->window->clear(sf::Color(213, 41, 76));
+	this->window->clear(sf::Color(18, 14, 28));
 	
 	for (auto& i : this->entities)
 	{

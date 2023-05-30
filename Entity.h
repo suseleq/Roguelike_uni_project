@@ -46,9 +46,13 @@ public:
 
 	//void setPosition(const sf::Vector2f& position);
 	virtual void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
-	
+	sf::Vector2f normalizeVector(const sf::Vector2f& direction);
+	int getHealth() const;
+	void setHealth();
+	void setHealthPlus(int health_);
+	void setHealthMinus(int health_);
 	virtual void update(const float& dt);
-	virtual void update(const float& dt, const sf::Vector2f& direction);
+	virtual void update(const sf::Vector2f& direction, const float& dt);
 	virtual void render(sf::RenderTarget& target);
 };
 

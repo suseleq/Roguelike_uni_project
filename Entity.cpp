@@ -51,12 +51,46 @@ void Entity::attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>
 {
 }
 
-void Entity::update(const float& dt)
+sf::Vector2f Entity::normalizeVector(const sf::Vector2f& direction)
 {
+	sf::Vector2f result(direction.x - this->getPosition().x - this->getGlobalBounds().width / 2,
+		direction.y - this->getPosition().y - this->getGlobalBounds().height / 2);
+	float length = sqrt(pow(result.x, 2) + pow(result.y, 2));
+	result = sf::Vector2f(result.x / length, result.y / length);
+	return result;
 }
 
-void Entity::update(const float& dt, const sf::Vector2f& direction)
+int Entity::getHealth() const
 {
+	return this->health;
+}
+
+void Entity::setHealth()
+{
+	this->health--;
+}
+
+void Entity::setHealthPlus(int health_)
+{
+	this->health += health_;
+}
+
+void Entity::setHealthMinus(int health_)
+{
+	this->health -= health_;
+}
+
+
+void Entity::update(const float& dt)
+{
+	if(this->circle != nullptr)
+		this->circle->uptade();
+}
+
+void Entity::update(const sf::Vector2f& direction, const float& dt)
+{
+	if (this->circle != nullptr)
+		this->circle->uptade();
 }
 
 

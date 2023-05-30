@@ -42,19 +42,21 @@ void Character::moving(const float& dt)
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		this->isMoving = true;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && this->getGlobalBounds().left > this->screenBounds.left)
 		{	
 			this->move(this->velocity * dt * -1, 0);
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) 
+			&& this->getGlobalBounds().left + this->getGlobalBounds().width < this->screenBounds.width)
 		{
 			this->move(this->velocity * dt, 0);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->getGlobalBounds().top > this->screenBounds.top)
 		{
 			this->move(0, this->velocity * dt * -1);
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
+			&& this->getGlobalBounds().top + this->getGlobalBounds().height < this->screenBounds.height)
 		{
 			this->move(0, this->velocity * dt);
 		}
@@ -63,6 +65,11 @@ void Character::moving(const float& dt)
 	{
 		this->isMoving = false;
 	}
+}
+
+void Character::setScreenBounds(const sf::FloatRect& bounds)
+{
+	this->screenBounds = bounds;
 }
 
 void Character::circleIntersection(const sf::FloatRect& bounds)
@@ -83,13 +90,9 @@ void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack && this->canAttack) 
 	{
-		sf::Vector2f direction(directionMouse.x - this->getPosition().x, directionMouse.y - this->getPosition().y);
-		float length = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
-		direction = sf::Vector2f(direction.x / length, direction.y / length);
-
+		sf::Vector2f direction = this->normalizeVector(directionMouse);
 		std::unique_ptr<Bullet> bullet(new Bullet(100.f, false, direction));
-		bullet->setPosition(this->hitbox->getPosition().x + 5 * cos(atan2f(direction.y, direction.x)),
-			this->hitbox->getPosition().y + 3 * sin(atan2f(direction.y, direction.x)));
+		bullet->setPosition(this->getPosition().x + this->getGlobalBounds().width / 2, this->getPosition().y + this->getGlobalBounds().height / 2);
 		bullets.emplace_back(std::move(bullet));
 		this->cooldownAttack = 0.f;
 	}

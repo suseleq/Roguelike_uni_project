@@ -16,7 +16,7 @@ public:
 	~Slime();
 
 	
-	void update(sf::Vector2f& direction,const float& dt);
+	void update(const sf::Vector2f& direction,const float& dt);
 
 
 
