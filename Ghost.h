@@ -4,14 +4,14 @@
 class Ghost : public Entity
 {
 private:
-	void initStats();
-	void initTexture();
+	void initStats(const std::string& type);
+	void initTexture(const std::string& type);
 	void initHitbox();
 	void initAnimations();
 
 
 public:
-	Ghost();
+	Ghost(const std::string& type);
 	~Ghost();
 
 

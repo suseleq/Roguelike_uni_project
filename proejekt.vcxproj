@@ -149,6 +149,7 @@
     <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Hitbox.cpp" />
     <ClCompile Include="proejekt.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="Slime.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Hitbox.h" />
+    <ClInclude Include="Skeleton.h" />
     <ClInclude Include="Slime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

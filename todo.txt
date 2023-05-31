@@ -1,0 +1,18 @@
+Do zrobienia:
+Animowanie respienia, otrzymywania obrazen, smierci
+Menu startowe i zatrzymanie gierki
+Skeleton - poruszanie, strzelanie
+Poprawienie kolizji z kółkami
+Damage od wrogów
+Wyświetlanie zycia, punktow, poziomu
+Restart gry
+Balans rozgrywki
+System progresji:
+-buffy - losowanie, wybieranie
+-spawn wrogow
+-exp
+
+
+Jak zostanie czas
+knockback
+lepsza estetyka gry/kodu

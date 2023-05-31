@@ -3,6 +3,7 @@
 void Slime::initStats()
 {
 	this->health = 1;
+	this->damage = 1;
 	this->velocity = 100.f;
 }
 
@@ -11,7 +12,7 @@ void Slime::initTexture()
 	this->texture = std::make_unique<sf::Texture>();
 	this->texture->loadFromFile("./Textures/slime.png");
 	this->setTexture(*this->texture);
-	this->setTextureRect(sf::IntRect(0, 0, 32, 32));
+	this->setTextureRect(sf::IntRect(0, 0, 16, 16));
 	this->setScale(2.5, 2.5);
 
 	this->setPosition(400, 300);
@@ -20,7 +21,7 @@ void Slime::initTexture()
 void Slime::initHitbox()
 {
 	this->hitbox = std::make_unique<Hitbox>(*this, 10, 18, 24, 14);
-	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 60);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 30);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 50));
 }
 

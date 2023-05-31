@@ -18,6 +18,7 @@ protected:
 	std::map<std::string, std::unique_ptr<Animations>> animations;
 
 	int health;
+	int damage;
 	bool isMoving;
 	float velocity;
 	float maxCooldownAttack;
@@ -51,6 +52,8 @@ public:
 	void setHealth();
 	void setHealthPlus(int health_);
 	void setHealthMinus(int health_);
+	void setDamage(int damage_);
+	int getDamage();
 	virtual void update(const float& dt);
 	virtual void update(const sf::Vector2f& direction, const float& dt);
 	virtual void render(sf::RenderTarget& target);

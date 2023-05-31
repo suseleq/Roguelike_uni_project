@@ -80,6 +80,16 @@ void Entity::setHealthMinus(int health_)
 	this->health -= health_;
 }
 
+void Entity::setDamage(int damage_)
+{
+	this->damage += damage_;
+}
+
+int Entity::getDamage()
+{
+	return this->damage;
+}
+
 
 void Entity::update(const float& dt)
 {

@@ -16,6 +16,15 @@ void Game::initGame()
 	std::unique_ptr<Entity> slime(new Slime());
 	this->entities.emplace_back(std::move(slime));
 
+	std::unique_ptr<Entity> pink(new Ghost("pink"));
+	this->entities.emplace_back(std::move(pink));
+
+	std::unique_ptr<Entity> blue(new Ghost("blue"));
+	this->entities.emplace_back(std::move(blue));
+
+	std::unique_ptr<Entity> skeleton(new Skeleton(10, 10));
+	this->entities.emplace_back(std::move(skeleton));
+
 
 	this->character = std::make_unique<Character>();
 	this->character->setPosition(this->window->getSize().x / 2,
@@ -89,8 +98,6 @@ void Game::updateSfmlEvent()
 			this->window->close();
 	}
 }
-
-
 
 Game::Game()
 {

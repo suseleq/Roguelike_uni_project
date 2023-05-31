@@ -4,6 +4,8 @@
 #include "CrystalBowl.h"
 #include "Character.h"
 #include "Bullet.h"
+#include "Ghost.h"
+#include "Skeleton.h"
 #include <iostream>
 #include <algorithm>
 
