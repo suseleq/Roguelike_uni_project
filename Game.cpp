@@ -2,17 +2,23 @@
 
 void Game::initWindow()
 {
-	this->window = std::make_unique<sf::RenderWindow>(sf::VideoMode(1024, 900), "siema");
+	this->window = std::make_unique<sf::RenderWindow>(sf::VideoMode(1024, 900), "Projekt");
 	this->window->setFramerateLimit(60);
 }
 
 void Game::initGame()
 {
-	
+	this->menu = std::make_unique<Menu>(true);
+	this->state = mainMenu;
+}
+
+void Game::startGame()
+{
 	std::unique_ptr<Entity> bowl(new CrystalBowl());
 	bowl->setPosition(this->window->getSize().x / 2 - bowl->getGlobalBounds().width / 2,
 		this->window->getSize().y / 2 - bowl->getGlobalBounds().height / 2);
 	this->entities.emplace_back(std::move(bowl));
+	
 	std::unique_ptr<Entity> slime(new Slime());
 	this->entities.emplace_back(std::move(slime));
 
@@ -28,9 +34,8 @@ void Game::initGame()
 
 	this->character = std::make_unique<Character>();
 	this->character->setPosition(this->window->getSize().x / 2,
-		this->window->getSize().y / 2 );
+		this->window->getSize().y / 2);
 	this->character->setScreenBounds(sf::FloatRect(0, 0, this->window->getSize().x, this->window->getSize().y));
-
 }
 
 void Game::updateEntities()
@@ -42,10 +47,10 @@ void Game::updateEntities()
 		for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
 		{
 			bullet->get()->uptade(dt);
-			if (bullet->get()->getGlobalBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
+			if (bullet->get()->getHitboxBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
 			{
 				bullet = this->bullets.erase(bullet);
-				entity->get()->setHealth();
+				entity->get()->setHealthMinus(this->character->getDamage());
 				if (entity->get()->getHealth() <= 0)
 				{
 					isDead = true;
@@ -97,6 +102,42 @@ void Game::updateSfmlEvent()
 		if(this->e.type == sf::Event::Closed)
 			this->window->close();
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && this->state == game)
+		this->state = pauseMenu;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+	{
+		if (this->state == pauseMenu)
+		{
+			switch (this->menu->getOption())
+			{
+			case 0:
+				this->state = game;
+				break;
+			case 1:
+				break;
+			case 2:
+				this->window->close();
+			default:
+				break;
+			}
+		}
+		if (this->state == mainMenu)
+		{
+			switch (this->menu->getOption())
+			{
+			case 0:
+				this->state = game;
+				this->menu = std::make_unique<Menu>(false);
+				this->startGame();
+				break;
+			case 1:
+				this->window->close();
+			default:
+				break;
+			}
+		}
+	}
 }
 
 Game::Game()
@@ -112,27 +153,46 @@ Game::~Game()
 
 void Game::update()
 {
-	this->mousePosition = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 	this->dt = this->dtClock.restart().asSeconds();
-
-	this->updateBullets();
-	this->updateEntities();
-
 	this->updateSfmlEvent();
+	
+	if (this->state == game)
+	{
+		this->mousePosition = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
+		this->updateBullets();
+		this->updateEntities();
+	}
+	else
+	{
+		this->menu->update(this->dt);
+	}
+
+	
+}
+
+void Game::renderGame()
+{
+	this->character->render(*this->window);
+	for (auto& i : this->entities)
+	{
+		i->render(*this->window);
+	}
+	for (auto& i : this->bullets)
+	{
+		i->render(*this->window);
+	}
 }
 
 void Game::render()
 {
 	this->window->clear(sf::Color(18, 14, 28));
-	
-	for (auto& i : this->entities)
+	if (this->state == game)
 	{
-		i->render(*this->window);
+		this->renderGame();
 	}
-	this->character->render(*this->window);
-	for (auto& i : this->bullets)
+	else
 	{
-		i->render(*this->window);
+		this->menu->render(*this->window);
 	}
 	this->window->display();
 }

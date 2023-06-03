@@ -5,9 +5,12 @@ void Character::initStats()
 {
 	this->canAttack = false;
 	this->health = 3;
-	this->cooldownAttack = 200.f;
-	this->maxCooldownAttack = 200.f;
-	this->velocity = 200.f;
+	this->cooldownAttack = 250.f;
+	this->maxCooldownAttack = 250.f;
+	this->velocity = 150.f;
+	this->damage = 1;
+	this->additionalBullets = 0;
+	this->randomDirection = std::uniform_real_distribution<float>(-1.f, 1.f);
 }
 
 void Character::initTexture()
@@ -86,6 +89,26 @@ void Character::setCanAttack(bool cA)
 	this->canAttack = cA;
 }
 
+void Character::damageBuff()
+{
+	this->damage++;
+}
+
+void Character::velocityBuff()
+{
+	this->velocity += this->velocity * 0.1;
+}
+
+void Character::attackSpeedBuff()
+{
+	this->maxCooldownAttack -= this->maxCooldownAttack * 0.25;
+}
+
+void Character::bulletBuff()
+{
+	this->additionalBullets++;
+}
+
 void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr<Bullet>>& bullets)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack && this->canAttack) 
@@ -94,6 +117,13 @@ void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr
 		std::unique_ptr<Bullet> bullet(new Bullet(100.f, false, direction));
 		bullet->setPosition(this->getPosition().x + this->getGlobalBounds().width / 2, this->getPosition().y + this->getGlobalBounds().height / 2);
 		bullets.emplace_back(std::move(bullet));
+		for (size_t i = 0; i < this->additionalBullets; i++)
+		{
+			std::unique_ptr<Bullet> bullet(new Bullet(100.f, false, sf::Vector2f(this->randomDirection(rd), this->randomDirection(rd))));
+			bullet->setPosition(this->getPosition().x + this->getGlobalBounds().width / 2, this->getPosition().y + this->getGlobalBounds().height / 2);
+			bullets.emplace_back(std::move(bullet));
+		}
+		
 		this->cooldownAttack = 0.f;
 	}
 }

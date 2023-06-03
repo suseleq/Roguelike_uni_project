@@ -37,15 +37,13 @@ public:
 	Entity(const std::string& path);
 	virtual ~Entity();
 
-	//virtual void move(const float& dt, const sf::Vector2f& direction);
-	//sf::Vector2f getPosition();
+	
 	void setIsMoving(bool moving);
 	bool getIsMoving();
 
 	sf::FloatRect getCircleBounds();
 	sf::FloatRect getHitboxBounds();
 
-	//void setPosition(const sf::Vector2f& position);
 	virtual void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 	sf::Vector2f normalizeVector(const sf::Vector2f& direction);
 	int getHealth() const;

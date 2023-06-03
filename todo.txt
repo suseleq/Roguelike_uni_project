@@ -1,6 +1,5 @@
 Do zrobienia:
 Animowanie respienia, otrzymywania obrazen, smierci
-Menu startowe i zatrzymanie gierki
 Skeleton - poruszanie, strzelanie
 Poprawienie kolizji z kółkami
 Damage od wrogów

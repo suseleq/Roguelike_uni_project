@@ -28,6 +28,11 @@ void Skeleton::initAnimations()
 	this->animations["RUN"] = std::make_unique<Animations>(*this, *this->texture, 4, 70.f, sf::IntRect(0, 0, 48, 48), 0, 48);
 }
 
+void Skeleton::move(const float& dt)
+{
+	
+}
+
 Skeleton::Skeleton(float radiusA_, float radiusB_)
 {
 	this->initStats(radiusA_, radiusB_);
@@ -45,4 +50,5 @@ void Skeleton::update(const sf::Vector2f& direction, const float& dt)
 	this->animations["RUN"]->makeAnimation(dt);
 	this->circle->uptade();
 	this->hitbox->uptade();
+	
 }

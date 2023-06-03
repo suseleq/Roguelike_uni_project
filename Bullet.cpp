@@ -10,13 +10,11 @@ void Bullet::initTexture()
 
 void Bullet::initHitbox()
 {
-	this->hitbox = nullptr;
+	this->hitbox = std::make_unique<Hitbox>(*this, 5, 5, 8, 8);
 }
 
 Bullet::Bullet()
 {
-	//this->texture = nullptr;
-
 }
 
 Bullet::Bullet(float velocity_, bool enemy_, const sf::Vector2f& direction_)
@@ -30,6 +28,11 @@ Bullet::~Bullet()
 {
 }
 
+sf::FloatRect Bullet::getHitboxBounds()
+{
+	return this->hitbox->getGlobalBounds();
+}
+
 const bool Bullet::getEnemyBullet() const
 {
 	return this->enemy;
@@ -39,7 +42,7 @@ void Bullet::uptade(const float& dt)
 {
 	this->move(this->direction.x * dt * this->velocity, 
 		this->direction.y * dt * this->velocity);
-
+	this->hitbox->uptade();
 }
 
 void Bullet::render(sf::RenderTarget& target)

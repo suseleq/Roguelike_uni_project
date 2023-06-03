@@ -12,6 +12,7 @@ class Skeleton : public Entity
 	void initHitbox();
 	void initAnimations();
 
+	void move(const float& dt);
 
 public:
 	Skeleton(float radiusA_, float radiusB_);
@@ -19,6 +20,6 @@ public:
 
 
 	void update(const sf::Vector2f& direction, const float& dt);
-
+	
 };
 

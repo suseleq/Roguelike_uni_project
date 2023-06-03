@@ -140,8 +140,9 @@ void Entity::render(sf::RenderTarget& target)
 	}
 	
 	target.draw(*this);
-	if (this->hitbox != nullptr)
+	/*if (this->hitbox != nullptr)
 	{
 		this->hitbox->render(target);
 	}
+	*/
 }
