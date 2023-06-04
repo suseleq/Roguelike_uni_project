@@ -11,6 +11,8 @@ void Character::initStats()
 	this->damage = 1;
 	this->additionalBullets = 0;
 	this->randomDirection = std::uniform_real_distribution<float>(-1.f, 1.f);
+	this->points = 0;
+	this->level = 1;
 }
 
 void Character::initTexture()
@@ -84,9 +86,10 @@ void Character::circleIntersection(const sf::FloatRect& bounds)
 	}
 }
 
-void Character::setCanAttack(bool cA)
+
+int Character::getLevel()
 {
-	this->canAttack = cA;
+	return this->level;
 }
 
 void Character::damageBuff()

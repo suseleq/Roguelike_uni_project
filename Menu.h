@@ -1,15 +1,15 @@
 #pragma once
-#include "Hitbox.h"
+#include "GUI.h"
 
-class Menu
+class Menu : public GUI
 {
 private:
 	float delayTime;
 	bool changeOption;
 	int currentOption;
-	std::vector<sf::Text> text;
-	std::unique_ptr<sf::Font> font;
 	
+	void initText(bool mainMenu);
+
 public:
 	Menu(bool mainMenu);
 	~Menu();
@@ -19,7 +19,6 @@ public:
 
 	void update(const float& dt);
 
-	void render(sf::RenderTarget& target);
 	int getOption();
 };
 

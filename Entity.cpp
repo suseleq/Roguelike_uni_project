@@ -90,6 +90,11 @@ int Entity::getDamage()
 	return this->damage;
 }
 
+int Entity::getPoints()
+{
+	return this->points;
+}
+
 
 void Entity::update(const float& dt)
 {

@@ -7,6 +7,7 @@ class Character : public Entity
 private:
 	bool canAttack;
 	int additionalBullets;
+	int level;
 	sf::FloatRect screenBounds;
 
 	std::random_device rd;
@@ -25,7 +26,7 @@ public:
 
 	void setScreenBounds(const sf::FloatRect& bounds);
 	void circleIntersection(const sf::FloatRect& bounds);
-	void setCanAttack(bool cA);
+	int getLevel();
 	void damageBuff();
 	void velocityBuff();
 	void attackSpeedBuff();

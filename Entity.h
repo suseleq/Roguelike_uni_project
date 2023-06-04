@@ -23,7 +23,7 @@ protected:
 	float velocity;
 	float maxCooldownAttack;
 	float cooldownAttack;
-
+	int points;
 
 
 	virtual void initStats();
@@ -37,7 +37,6 @@ public:
 	Entity(const std::string& path);
 	virtual ~Entity();
 
-	
 	void setIsMoving(bool moving);
 	bool getIsMoving();
 
@@ -52,6 +51,7 @@ public:
 	void setHealthMinus(int health_);
 	void setDamage(int damage_);
 	int getDamage();
+	int getPoints();
 	virtual void update(const float& dt);
 	virtual void update(const sf::Vector2f& direction, const float& dt);
 	virtual void render(sf::RenderTarget& target);

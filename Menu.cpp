@@ -1,12 +1,7 @@
 #include "Menu.h"
 
-Menu::Menu(bool mainMenu)
+void Menu::initText(bool mainMenu)
 {
-	this->delayTime = 0.f;
-	this->changeOption = true;
-	this->currentOption = 0;
-	this->font = std::make_unique<sf::Font>();
-	this->font->loadFromFile("./fonts/PixellettersFull.ttf");
 	if (mainMenu)
 	{
 		this->text = std::vector<sf::Text>(2);
@@ -31,6 +26,14 @@ Menu::Menu(bool mainMenu)
 	}
 	this->text[0].setFillColor(sf::Color::Red);
 
+}
+
+Menu::Menu(bool mainMenu)
+{
+	this->delayTime = 0.f;
+	this->changeOption = true;
+	this->currentOption = 0;
+	this->initText(mainMenu);
 }
 
 Menu::~Menu()
@@ -81,13 +84,6 @@ void Menu::update(const float& dt)
 	}
 }
 
-void Menu::render(sf::RenderTarget& target)
-{
-	for (auto& i : this->text)
-	{
-		target.draw(i);
-	}
-}
 
 int Menu::getOption()
 {

@@ -8,7 +8,7 @@ void Game::initWindow()
 
 void Game::initGame()
 {
-	this->menu = std::make_unique<Menu>(true);
+	this->gui = std::make_unique<Menu>(true);
 	this->state = mainMenu;
 }
 
@@ -19,23 +19,19 @@ void Game::startGame()
 		this->window->getSize().y / 2 - bowl->getGlobalBounds().height / 2);
 	this->entities.emplace_back(std::move(bowl));
 	
-	std::unique_ptr<Entity> slime(new Slime());
-	this->entities.emplace_back(std::move(slime));
-
-	std::unique_ptr<Entity> pink(new Ghost("pink"));
-	this->entities.emplace_back(std::move(pink));
-
-	std::unique_ptr<Entity> blue(new Ghost("blue"));
-	this->entities.emplace_back(std::move(blue));
-
-	std::unique_ptr<Entity> skeleton(new Skeleton(10, 10));
-	this->entities.emplace_back(std::move(skeleton));
-
-
 	this->character = std::make_unique<Character>();
 	this->character->setPosition(this->window->getSize().x / 2,
 		this->window->getSize().y / 2);
 	this->character->setScreenBounds(sf::FloatRect(0, 0, this->window->getSize().x, this->window->getSize().y));
+
+	std::unique_ptr<Entity> slime(new Slime());
+	this->entities.emplace_back(std::move(slime));
+
+
+
+	this->gui = std::make_unique<GUI>(this->character->getHealth(),
+		this->character->getPoints(),
+		this->character->getLevel());
 }
 
 void Game::updateEntities()
@@ -43,35 +39,44 @@ void Game::updateEntities()
 	this->character->update(this->dt);
 	for (auto entity = this->entities.begin(); entity != this->entities.end();)
 	{
-		bool isDead = false;
-		for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
+		CrystalBowl* bowl = dynamic_cast<CrystalBowl*> (entity->get());
+		if (bowl != nullptr)
 		{
-			bullet->get()->uptade(dt);
-			if (bullet->get()->getHitboxBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
-			{
-				bullet = this->bullets.erase(bullet);
-				entity->get()->setHealthMinus(this->character->getDamage());
-				if (entity->get()->getHealth() <= 0)
-				{
-					isDead = true;
-				}
-			}
-			else
-			{
-				++bullet;
-			}
-		}
-		if (isDead)
-		{
-			entity = this->entities.erase(entity);
+			bowl->update(this->dt);
+			++entity;
 		}
 		else
 		{
-			entity->get()->update(sf::Vector2f(this->character->getPosition().x + this->character->getGlobalBounds().width / 2,
-				this->character->getPosition().y + this->character->getGlobalBounds().height / 2), this->dt);
-			entity->get()->attack(mousePosition, this->bullets);
-			this->character->circleIntersection(entity->get()->getCircleBounds());
-			++entity;
+			bool isDead = false;
+			for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
+			{
+				bullet->get()->uptade(dt);
+				if (bullet->get()->getHitboxBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
+				{
+					bullet = this->bullets.erase(bullet);
+					entity->get()->setHealthMinus(this->character->getDamage());
+					if (entity->get()->getHealth() <= 0)
+					{
+						isDead = true;
+					}
+				}
+				else
+				{
+					++bullet;
+				}
+			}
+			if (isDead)
+			{
+				entity = this->entities.erase(entity);
+			}
+			else
+			{
+				entity->get()->update(sf::Vector2f(this->character->getPosition().x + this->character->getGlobalBounds().width / 2,
+					this->character->getPosition().y + this->character->getGlobalBounds().height / 2), this->dt);
+				entity->get()->attack(mousePosition, this->bullets);
+				this->character->circleIntersection(entity->get()->getCircleBounds());
+				++entity;
+			}
 		}
 	}
 	this->character->attack(mousePosition, this->bullets);
@@ -102,42 +107,63 @@ void Game::updateSfmlEvent()
 		if(this->e.type == sf::Event::Closed)
 			this->window->close();
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && this->state == game)
-		this->state = pauseMenu;
+}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+void Game::updateGui()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && (this->state == game || this->state == buff))
 	{
-		if (this->state == pauseMenu)
+		this->state = pauseMenu;
+		this->gui = std::make_unique<Menu>(false);
+	}
+
+	Menu* menu = dynamic_cast<Menu*>(this->gui.get());
+	if (menu != nullptr)
+	{
+		menu->update(this->dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 		{
-			switch (this->menu->getOption())
+			if (this->state == pauseMenu)
 			{
-			case 0:
-				this->state = game;
-				break;
-			case 1:
-				break;
-			case 2:
-				this->window->close();
-			default:
-				break;
+				switch (menu->getOption())
+				{
+				case 0:
+					this->state = game;
+					this->gui = std::make_unique<GUI>(this->character->getHealth(), 
+						this->character->getPoints(), 
+						this->character->getLevel());
+					break;
+				case 1:
+					break;
+				case 2:
+					this->window->close();
+				default:
+					break;
+				}
 			}
-		}
-		if (this->state == mainMenu)
-		{
-			switch (this->menu->getOption())
+			if (this->state == mainMenu)
 			{
-			case 0:
-				this->state = game;
-				this->menu = std::make_unique<Menu>(false);
-				this->startGame();
-				break;
-			case 1:
-				this->window->close();
-			default:
-				break;
+				switch (menu->getOption())
+				{
+				case 0:
+					this->state = game;
+					this->startGame();
+					break;
+				case 1:
+					this->window->close();
+				default:
+					break;
+				}
 			}
 		}
 	}
+	else 
+	{
+		this->gui->update(this->character->getHealth(),
+			this->character->getPoints(),
+			this->character->getLevel());
+	}
+
 }
 
 Game::Game()
@@ -162,12 +188,7 @@ void Game::update()
 		this->updateBullets();
 		this->updateEntities();
 	}
-	else
-	{
-		this->menu->update(this->dt);
-	}
-
-	
+	this->updateGui();
 }
 
 void Game::renderGame()
@@ -190,10 +211,8 @@ void Game::render()
 	{
 		this->renderGame();
 	}
-	else
-	{
-		this->menu->render(*this->window);
-	}
+	this->gui->render(*this->window);
+	
 	this->window->display();
 }
 

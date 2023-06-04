@@ -7,6 +7,7 @@
 #include "Ghost.h"
 #include "Skeleton.h"
 #include "Menu.h"
+#include "GUI.h"
 #include <iostream>
 #include <algorithm>
 
@@ -22,7 +23,7 @@ private:
 	};
 
 	std::unique_ptr<sf::RenderWindow> window;
-	std::unique_ptr<Menu> menu;
+	std::unique_ptr<GUI> gui;
 
 	GameState state;
 
@@ -45,6 +46,7 @@ private:
 	void updateEntities();
 	void updateBullets();
 	void updateSfmlEvent();
+	void updateGui();
 
 
 public:
