@@ -31,6 +31,7 @@ public:
 	void velocityBuff();
 	void attackSpeedBuff();
 	void bulletBuff();
+	void addPoints(int points_);
 	void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
 	void update(const float& dt);
 };

@@ -11,11 +11,10 @@ private:
 	bool enemy;
 	sf::Vector2f direction;
 
-	void initTexture();
+	void initTexture(bool enemy);
 	void initHitbox();
 
 public:
-	Bullet();
 	Bullet(float velocity_, bool enemy_,const sf::Vector2f& direction_);
 	~Bullet();
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Animations.h"
+#include <random>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 

@@ -24,10 +24,8 @@ void Game::startGame()
 		this->window->getSize().y / 2);
 	this->character->setScreenBounds(sf::FloatRect(0, 0, this->window->getSize().x, this->window->getSize().y));
 
-	std::unique_ptr<Entity> slime(new Slime());
-	this->entities.emplace_back(std::move(slime));
-
-
+	std::unique_ptr<Entity> skeleton(new Skeleton(this->window->getSize().x / 2, this->window->getSize().y / 2));
+	this->entities.emplace_back(std::move(skeleton));
 
 	this->gui = std::make_unique<GUI>(this->character->getHealth(),
 		this->character->getPoints(),
@@ -43,6 +41,7 @@ void Game::updateEntities()
 		if (bowl != nullptr)
 		{
 			bowl->update(this->dt);
+			this->character->circleIntersection(bowl->getCircleBounds());
 			++entity;
 		}
 		else
@@ -67,6 +66,7 @@ void Game::updateEntities()
 			}
 			if (isDead)
 			{
+				this->character->addPoints(entity->get()->getPoints());
 				entity = this->entities.erase(entity);
 			}
 			else

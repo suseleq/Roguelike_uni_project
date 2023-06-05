@@ -5,6 +5,7 @@ void Slime::initStats()
 	this->health = 1;
 	this->damage = 1;
 	this->velocity = 100.f;
+	this->points = 10;
 }
 
 void Slime::initTexture()

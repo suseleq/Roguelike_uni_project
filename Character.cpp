@@ -112,6 +112,11 @@ void Character::bulletBuff()
 	this->additionalBullets++;
 }
 
+void Character::addPoints(int points_)
+{
+	this->points += points_;
+}
+
 void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr<Bullet>>& bullets)
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack && this->canAttack) 

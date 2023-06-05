@@ -1,10 +1,13 @@
 #include "Skeleton.h"
 
-void Skeleton::initStats(float radiusA_, float radiusB_)
+void Skeleton::initStats()
 {
 	this->health = 5;
 	this->damage = 3;
-	this->velocity = 100.f;
+	this->randomAngle = std::uniform_real_distribution<float>(0, 3.14);
+	this->velocity = 0.3f;
+	this->angle = this->randomAngle(rd);
+	this->points = 50;
 }
 
 void Skeleton::initTexture()
@@ -28,14 +31,16 @@ void Skeleton::initAnimations()
 	this->animations["RUN"] = std::make_unique<Animations>(*this, *this->texture, 4, 70.f, sf::IntRect(0, 0, 48, 48), 0, 48);
 }
 
-void Skeleton::move(const float& dt)
+void Skeleton::moving(const float& dt)
 {
-	
+	this->setPosition(this->radiusA + (this->radiusA - 100) * cos(angle),
+		this->radiusB + (this->radiusB - 100) * sin(angle));
+	this->angle += velocity * dt;
 }
 
-Skeleton::Skeleton(float radiusA_, float radiusB_)
+Skeleton::Skeleton(float radiusA_, float radiusB_) : radiusA(radiusA_), radiusB(radiusB_)
 {
-	this->initStats(radiusA_, radiusB_);
+	this->initStats();
 	this->initTexture();
 	this->initHitbox();
 	this->initAnimations();
@@ -50,5 +55,5 @@ void Skeleton::update(const sf::Vector2f& direction, const float& dt)
 	this->animations["RUN"]->makeAnimation(dt);
 	this->circle->uptade();
 	this->hitbox->uptade();
-	
+	this->moving(dt);
 }

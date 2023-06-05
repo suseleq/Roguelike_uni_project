@@ -34,8 +34,8 @@ GUI::GUI(int life, int points, int level)
 	this->font->loadFromFile("./fonts/PixellettersFull.ttf");
 	this->initText();
 	this->text[1].setString(std::to_string(life));
-	this->text[3].setString(std::to_string(level));
-	this->text[5].setString(std::to_string(points));
+	this->text[3].setString(std::to_string(points));
+	this->text[5].setString(std::to_string(level));
 
 }
 
@@ -50,8 +50,8 @@ void GUI::update(const float& dt)
 void GUI::update(int life, int points, int level)
 {
 	this->text[1].setString(std::to_string(life));
-	this->text[3].setString(std::to_string(level));
-	this->text[5].setString(std::to_string(points));
+	this->text[3].setString(std::to_string(points));
+	this->text[5].setString(std::to_string(level));
 
 }
 

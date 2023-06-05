@@ -7,10 +7,12 @@ void Ghost::initStats(const std::string& type)
 	if (type == "pink")
 	{
 		this->velocity = 200.f;
+		this->points = 30;
 	}
 	else
 	{
 		this->velocity = 100.f;
+		this->points = 20;
 	}
 }
 

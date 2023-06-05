@@ -1,9 +1,7 @@
 Do zrobienia:
-Animowanie respienia, otrzymywania obrazen, smierci
-Skeleton - poruszanie, strzelanie
+Skeleton - strzelanie
 Poprawienie kolizji z kółkami
 Damage od wrogów
-Wyświetlanie zycia, punktow, poziomu
 Restart gry
 Balans rozgrywki
 System progresji:
@@ -15,3 +13,4 @@ System progresji:
 Jak zostanie czas
 knockback
 lepsza estetyka gry/kodu
+Animowanie respienia, otrzymywania obrazen, smierci
