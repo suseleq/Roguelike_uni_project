@@ -8,6 +8,7 @@
 #include "Skeleton.h"
 #include "Menu.h"
 #include "GUI.h"
+#include "Experience.h"
 #include <iostream>
 #include <algorithm>
 

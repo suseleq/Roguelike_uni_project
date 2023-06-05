@@ -42,7 +42,7 @@ const bool Bullet::getEnemyBullet() const
 	return this->enemy;
 }
 
-void Bullet::uptade(const float& dt)
+void Bullet::update(const float& dt)
 {
 	this->move(this->direction.x * dt * this->velocity, 
 		this->direction.y * dt * this->velocity);

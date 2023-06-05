@@ -43,7 +43,7 @@ public:
 	sf::FloatRect getCircleBounds();
 	sf::FloatRect getHitboxBounds();
 
-	virtual void attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets);
+	
 	sf::Vector2f normalizeVector(const sf::Vector2f& direction);
 	int getHealth() const;
 	void setHealth();
@@ -52,7 +52,7 @@ public:
 	void setDamage(int damage_);
 	int getDamage();
 	int getPoints();
-	virtual void update(const float& dt);
+	void update(const float& dt);
 	virtual void update(const sf::Vector2f& direction, const float& dt);
 	virtual void render(sf::RenderTarget& target);
 };

@@ -4,16 +4,19 @@
 class CrystalBowl : public Entity
 {
 private:
-	virtual void initStats() override;
-	virtual void initTexture() override;
-	virtual void initAnimations() override;
+	//Initialize functions
+	void initStats();
+	void initTexture();
+	void initAnimations();
 
 public:
+	//Constructors / Destructors
 	CrystalBowl();
 	~CrystalBowl();
 
-	virtual void update(const float& dt) override;
-	virtual void update(const sf::Vector2f& direction, const float& dt) override;
+	//public functions
+	void update(const float& dt);
+	
 
 };
 

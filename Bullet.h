@@ -20,7 +20,7 @@ public:
 
 	sf::FloatRect getHitboxBounds();
 	const bool getEnemyBullet() const;
-	void uptade(const float& dt);
+	void update(const float& dt);
 	void render(sf::RenderTarget& target);
 
 };

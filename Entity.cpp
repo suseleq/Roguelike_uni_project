@@ -2,30 +2,36 @@
 
 void Entity::initStats()
 {
+	this->isMoving = false;
+	this->health = 0;
+	this->velocity = 0.f;
+	this->cooldownAttack = 0.f;
+	this->maxCooldownAttack = 0.f;
+	this->points = 0;
 }
 
 void Entity::initTexture()
 {
+	this->texture = nullptr;
+	this->circle = nullptr;
 }
 
 void Entity::initHitbox()
 {
+	this->hitbox = nullptr;
 }
 
 void Entity::initAnimations()
 {
+
 }
 
 Entity::Entity()
 {
-	this->isMoving = false;
-	this->circle = nullptr;
-	this->health = 0;
-	this->velocity = 0.f;
-	this->hitbox = nullptr;
-	this->texture = nullptr;
-	this->cooldownAttack = 0.f;
-	this->maxCooldownAttack = 0.f;
+	this->initStats();
+	this->initTexture();
+	this->initHitbox();
+	this->initAnimations();
 }
 
 
@@ -47,9 +53,7 @@ Entity::~Entity()
 {
 }
 
-void Entity::attack(sf::Vector2f& direction, std::vector<std::unique_ptr<Bullet>>& bullets)
-{
-}
+
 
 sf::Vector2f Entity::normalizeVector(const sf::Vector2f& direction)
 {
@@ -100,6 +104,13 @@ void Entity::update(const float& dt)
 {
 	if(this->circle != nullptr)
 		this->circle->uptade();
+	if (this->animations["IDLE"] != nullptr)
+	{
+		this->animations["IDLE"]->makeAnimation(dt);
+	}
+	if (this->hitbox != nullptr)
+		this->hitbox->uptade();
+
 }
 
 void Entity::update(const sf::Vector2f& direction, const float& dt)
@@ -145,9 +156,9 @@ void Entity::render(sf::RenderTarget& target)
 	}
 	
 	target.draw(*this);
-	/*if (this->hitbox != nullptr)
+	if (this->hitbox != nullptr)
 	{
 		this->hitbox->render(target);
 	}
-	*/
+	
 }

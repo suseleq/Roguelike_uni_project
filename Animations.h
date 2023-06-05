@@ -5,6 +5,7 @@
 class Animations
 {
 private:
+	//Variables
 	sf::Sprite& sprite;
 	sf::Texture& texture;
 	sf::IntRect currentFrame;
@@ -19,12 +20,13 @@ private:
 	int rectStep;
 
 public:
+	//Constructors / Destructors
 	Animations(sf::Sprite& sprite_, sf::Texture& texture_, int maxFrame_, float maxTime_,
 		sf::IntRect firstFrame_, int priority_, int rectStep_);
 	~Animations();
 
+	//Public functions
 	void makeAnimation(const float& dt);
-
 	bool isDone() const;
 	int getPriority() const;
 };

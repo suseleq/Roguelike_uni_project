@@ -4,6 +4,7 @@
 class Circle : public sf::CircleShape
 {
 private:
+	//Variables
 	sf::Sprite& sprite;
 	
 	float offsetX;
@@ -11,10 +12,11 @@ private:
 
 
 public:
-
+	//Constructors / Destructors
 	Circle(sf::Sprite& sprite, float offsetX_, float offsetY_, int radius);
 	~Circle();
 
+	//Public functions
 	void uptade();
 	void render(sf::RenderTarget& target);
 
