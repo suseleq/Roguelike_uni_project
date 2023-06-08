@@ -1,13 +1,14 @@
-#include "CrystalBowl.h"
+#include "MagicBowl.h"
 
-void CrystalBowl::initStats()
+
+void MagicBowl::initStats()
 {
 	//initialize circle
 	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 110);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 50));
 }
 
-void CrystalBowl::initTexture()
+void MagicBowl::initTexture()
 {
 	//initialize texture and setting on sprite
 	this->texture = std::make_unique<sf::Texture>();
@@ -17,7 +18,7 @@ void CrystalBowl::initTexture()
 	this->scale(1.3f, 1.3f);
 }
 
-void CrystalBowl::initAnimations()
+void MagicBowl::initAnimations()
 {
 	//initialize animation
 	this->animations["IDLE"] = std::make_unique<Animations>(*this, *this->texture, 4, 50.f, sf::IntRect(0, 0, 32, 32), 0, 32);
@@ -25,7 +26,7 @@ void CrystalBowl::initAnimations()
 
 //Constructors / Destructors
 
-CrystalBowl::CrystalBowl()
+MagicBowl::MagicBowl()
 {
 	//initiliaze variables
 	this->initTexture();
@@ -33,11 +34,11 @@ CrystalBowl::CrystalBowl()
 	this->initStats();
 }
 
-CrystalBowl::~CrystalBowl()
+MagicBowl::~MagicBowl()
 {
 }
 
-void CrystalBowl::update(const float& dt)
+void MagicBowl::update(const float& dt)
 {
 	//updating animation and circle
 	this->animations["IDLE"]->makeAnimation(dt);

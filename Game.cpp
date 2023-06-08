@@ -1,5 +1,6 @@
 #include "Game.h"
 
+
 void Game::initWindow()
 {
 	this->window = std::make_unique<sf::RenderWindow>(sf::VideoMode(1024, 900), "Projekt");
@@ -14,7 +15,12 @@ void Game::initGame()
 
 void Game::startGame()
 {
-	std::unique_ptr<Entity> bowl(new CrystalBowl());
+	this->entities.clear();
+	this->bullets.clear();
+	this->randomAngle = std::uniform_real_distribution<float>(-3.14f, 3.14f);
+
+
+	std::unique_ptr<Entity> bowl(new MagicBowl());
 	bowl->setPosition(this->window->getSize().x / 2 - bowl->getGlobalBounds().width / 2,
 		this->window->getSize().y / 2 - bowl->getGlobalBounds().height / 2);
 	this->entities.emplace_back(std::move(bowl));
@@ -24,79 +30,133 @@ void Game::startGame()
 		this->window->getSize().y / 2);
 	this->character->setScreenBounds(sf::FloatRect(0, 0, this->window->getSize().x, this->window->getSize().y));
 
-	std::unique_ptr<Entity> skeleton(new Experience());
-	skeleton->setPosition(100, 100);
-	this->entities.emplace_back(std::move(skeleton));
+	sf::Vector2f pos = sf::Vector2f(100, 100);
 
 	this->gui = std::make_unique<GUI>(this->character->getHealth(),
 		this->character->getPoints(),
 		this->character->getLevel());
+
+	this->spawnSlime();
+	this->spawnSlime();
+
 }
+
+sf::Vector2f Game::randomPosition()
+{
+	return sf::Vector2f(this->window->getSize().x / 2 + (this->window->getSize().x / 2 - 30) * cos(this->randomAngle(rd)),
+		this->window->getSize().y / 2 + (this->window->getSize().y / 2 - 30) * sin(this->randomAngle(rd)));
+}
+
+void Game::spawnSlime()
+{
+	std::unique_ptr<Entity> slime(new Slime);
+	slime->setPosition(this->randomPosition());
+	this->entities.emplace_back(std::move(slime));
+}
+
+void Game::spawnGhost(const std::string& type)
+{
+	std::unique_ptr<Entity> ghost(new Ghost(type));
+	ghost->setPosition(this->randomPosition());
+	this->entities.emplace_back(std::move(ghost));
+}
+
+void Game::spawnSkeleton()
+{
+	std::unique_ptr<Entity> skeleton(new Skeleton(this->window->getSize().x / 2, this->window->getSize().y / 2));
+	this->entities.emplace_back(std::move(skeleton));
+}
+
+void Game::updateCharacter()
+{
+	if (this->character->newLevel())
+	{
+		this->character->levelUp();
+	}
+	
+	this->character->attack(mousePosition, this->bullets);
+	if (this->character->getHealth() <= 0)
+	{
+		this->state = mainMenu;
+		this->gui = std::make_unique<Menu>(true);
+	}
+	this->character->update(this->dt);
+}
+
+
 
 void Game::updateEntities()
 {
-	this->character->update(this->dt);
 	for (auto entity = this->entities.begin(); entity != this->entities.end();)
 	{
-		CrystalBowl* bowl = dynamic_cast<CrystalBowl*>(entity->get());
+		MagicBowl* bowl = dynamic_cast<MagicBowl*>(entity->get());
+		Experience* exp = dynamic_cast<Experience*>(entity->get());
+		
+		//Update magicBowl
 		if (bowl != nullptr)
 		{
 			bowl->update(this->dt);
 			this->character->circleIntersection(bowl->getCircleBounds());
 			++entity;
 		}
+		//Update experience
+		else if(exp != nullptr)
+		{
+			exp->update(this->dt);
+			if (exp->getHitboxBounds().intersects(this->character->getHitboxBounds()))
+			{
+				entity = this->entities.erase(entity);
+				this->character->addExperience();
+			}
+			else
+				++entity;
+		}
+		//Update enemies
 		else
 		{
-			Experience* exp = dynamic_cast<Experience*>(entity->get());
-			if (exp != nullptr)
+			//Update life of enemy
+			for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
 			{
-				exp->update(this->dt);
-				if (exp->getHitboxBounds().intersects(this->character->getHitboxBounds()))
+				//Cheking if bullet hit			
+				if (bullet->get()->getHitboxBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
 				{
-					entity = this->entities.erase(entity);
+					//enemy get damage and delete bullet
+					entity->get()->setHealthMinus(bullet->get()->getDamage());
+					bullet = this->bullets.erase(bullet);
+					
 				}
 				else
-				{
-					++entity;
-				}
+					bullet++;
+			}
+			//Checking if enemy is alive
+			if (entity->get()->getHealth() <= 0)
+			{
+				//Getting points
+				this->character->addPoints(entity->get()->getPoints());
+				//Spawning experience from enemy
+				std::unique_ptr<Entity> exp(new Experience());
+				exp->setPosition(entity->get()->getPosition());
+				//Deleting enemy and emplacing exp to vector
+				entity = this->entities.erase(entity);
+				entity = this->entities.emplace(entity, std::move(exp));
 			}
 			else
 			{
-				bool isDead = false;
-				for (auto bullet = this->bullets.begin(); bullet != this->bullets.end();)
+				//Updating enemy
+				entity->get()->update(sf::Vector2f(this->character->getPosition().x + this->character->getGlobalBounds().width / 2,
+					this->character->getPosition().y + this->character->getGlobalBounds().height / 2), this->dt);
+				this->character->circleIntersection(entity->get()->getCircleBounds());
+				if (this->character->getGlobalBounds().intersects(entity->get()->getHitboxBounds()))
 				{
-					bullet->get()->update(dt);
-					if (bullet->get()->getHitboxBounds().intersects(entity->get()->getHitboxBounds()) && !bullet->get()->getEnemyBullet())
-					{
-						bullet = this->bullets.erase(bullet);
-						entity->get()->setHealthMinus(this->character->getDamage());
-						if (entity->get()->getHealth() <= 0)
-						{
-							isDead = true;
-						}
-					}
-					else
-					{
-						++bullet;
-					}
+					this->character->setHealthMinus(entity->get()->getDamage());
 				}
-				if (isDead)
-				{
-					this->character->addPoints(entity->get()->getPoints());
-					entity = this->entities.erase(entity);
-				}
-				else
-				{
-					entity->get()->update(sf::Vector2f(this->character->getPosition().x + this->character->getGlobalBounds().width / 2,
-						this->character->getPosition().y + this->character->getGlobalBounds().height / 2), this->dt);
-					this->character->circleIntersection(entity->get()->getCircleBounds());
-					++entity;
-				}
+				++entity;
 			}
+
 		}
 	}
-	this->character->attack(mousePosition, this->bullets);
 }
+
 
 void Game::updateBullets()
 {
@@ -107,13 +167,16 @@ void Game::updateBullets()
 		{
 			it = this->bullets.erase(it);
 		}
+		else if (it->get()->getHitboxBounds().intersects(this->character->getHitboxBounds()) && it->get()->getEnemyBullet())
+		{
+			this->character->setHealthMinus(it->get()->getDamage());
+			it = this->bullets.erase(it);
+		}
 		else
 		{
 			++it;
 		}
 	}
-
-
 }
 
 void Game::updateSfmlEvent()
@@ -150,6 +213,8 @@ void Game::updateGui()
 						this->character->getLevel());
 					break;
 				case 1:
+					this->state = game;
+					this->startGame();
 					break;
 				case 2:
 					this->window->close();
@@ -203,6 +268,7 @@ void Game::update()
 		this->mousePosition = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
 		this->updateBullets();
 		this->updateEntities();
+		this->updateCharacter();
 	}
 	this->updateGui();
 }

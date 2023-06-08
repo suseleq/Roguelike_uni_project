@@ -1,7 +1,7 @@
 #pragma once
 #include "Slime.h"
 #include "Entity.h"
-#include "CrystalBowl.h"
+#include "MagicBowl.h"
 #include "Character.h"
 #include "Bullet.h"
 #include "Ghost.h"
@@ -12,9 +12,11 @@
 #include <iostream>
 #include <algorithm>
 
+
 class Game
 {
 private:
+	//Variables
 	enum GameState 
 	{
 		mainMenu,
@@ -36,29 +38,37 @@ private:
 	sf::Clock dtClock;
 	float dt;
 	sf::Vector2f mousePosition;
-
+	std::random_device rd;
+	std::uniform_real_distribution <float> randomAngle;
 
 	//init functions
 	void initWindow();
 	void initGame();
 	void startGame();
 
+	//Spawn enemy functions
+	sf::Vector2f randomPosition();
+	void spawnSlime();
+	void spawnGhost(const std::string& type);
+	void spawnSkeleton();
 
+
+
+	//update functions
+	void updateCharacter();
 	void updateEntities();
 	void updateBullets();
 	void updateSfmlEvent();
 	void updateGui();
+	void update();
 
+	void renderGame();
+	void render();
 
 public:
 	Game();
 	~Game();
 
-	//update functions
-	void update();
-
-	void renderGame();
-	void render();
 	void run();
 };
 

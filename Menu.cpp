@@ -1,7 +1,10 @@
 #include "Menu.h"
 
+//Initialize functions
+
 void Menu::initText(bool mainMenu)
 {
+	//Init text depends on type of menu
 	if (mainMenu)
 	{
 		this->text = std::vector<sf::Text>(2);
@@ -15,6 +18,7 @@ void Menu::initText(bool mainMenu)
 		this->text[1].setString("Restart");
 		this->text[2].setString("Quit");
 	}
+	//Setting position of text
 	float x{ 100.f }, y{ 100.f };
 	for (auto& i : this->text)
 	{
@@ -28,11 +32,19 @@ void Menu::initText(bool mainMenu)
 
 }
 
-Menu::Menu(bool mainMenu)
+void Menu::initVariables()
 {
 	this->delayTime = 0.f;
 	this->changeOption = true;
 	this->currentOption = 0;
+}
+
+//Constructors / Destructors
+
+Menu::Menu(bool mainMenu)
+{
+	//Init variables and text
+	this->initVariables();
 	this->initText(mainMenu);
 }
 
@@ -40,8 +52,11 @@ Menu::~Menu()
 {
 }
 
+//Public functions
+
 void Menu::moveUp()
 {
+	//setting the upper option
 	if (this->currentOption > 0) 
 	{
 		this->text[this->currentOption].setFillColor(sf::Color::White);
@@ -54,6 +69,7 @@ void Menu::moveUp()
 
 void Menu::moveDown()
 {
+	//setting the bottom option
 	if (this->currentOption < this->text.size() - 1)
 	{
 		this->text[this->currentOption].setFillColor(sf::Color::White);
@@ -66,6 +82,7 @@ void Menu::moveDown()
 
 void Menu::update(const float& dt)
 {
+	//Updating delay time
 	if (this->delayTime <= 30.f) 
 	{
 		this->delayTime += 100 * dt;
@@ -75,6 +92,7 @@ void Menu::update(const float& dt)
 		this->changeOption = true;
 	}
 
+	//Update current option
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->changeOption)
 	{
 		this->moveUp();
@@ -87,5 +105,6 @@ void Menu::update(const float& dt)
 
 int Menu::getOption()
 {
+	//Return current option of menu
 	return this->currentOption;
 }

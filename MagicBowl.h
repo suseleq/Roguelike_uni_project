@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 
-class CrystalBowl : public Entity
+class MagicBowl : public Entity
 {
 private:
 	//Initialize functions
@@ -11,12 +11,12 @@ private:
 
 public:
 	//Constructors / Destructors
-	CrystalBowl();
-	~CrystalBowl();
+	MagicBowl();
+	~MagicBowl();
 
 	//public functions
 	void update(const float& dt);
-	
+
 
 };
 
