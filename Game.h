@@ -8,6 +8,8 @@
 #include "Skeleton.h"
 #include "Menu.h"
 #include "GUI.h"
+#include "Buffs.h"
+#include "GameInformation.h"
 #include "Experience.h"
 #include <iostream>
 #include <algorithm>
@@ -22,7 +24,7 @@ private:
 		mainMenu,
 		pauseMenu,
 		game,
-		buff
+		buffState
 	};
 
 	std::unique_ptr<sf::RenderWindow> window;

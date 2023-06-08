@@ -4,10 +4,6 @@
 class Menu : public GUI
 {
 private:
-	//Variables
-	float delayTime;
-	bool changeOption;
-	int currentOption;
 	
 	//Initialize functions
 	void initText(bool mainMenu);
@@ -23,7 +19,5 @@ public:
 	void moveDown();
 
 	void update(const float& dt);
-
-	int getOption();
 };
 

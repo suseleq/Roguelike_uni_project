@@ -32,7 +32,7 @@ void Game::startGame()
 
 	sf::Vector2f pos = sf::Vector2f(100, 100);
 
-	this->gui = std::make_unique<GUI>(this->character->getHealth(),
+	this->gui = std::make_unique<GameInformation>(this->character->getHealth(),
 		this->character->getPoints(),
 		this->character->getLevel());
 
@@ -190,16 +190,19 @@ void Game::updateSfmlEvent()
 
 void Game::updateGui()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && (this->state == game || this->state == buff))
+	//Pause Game
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && this->state == game)
 	{
 		this->state = pauseMenu;
 		this->gui = std::make_unique<Menu>(false);
 	}
-
 	Menu* menu = dynamic_cast<Menu*>(this->gui.get());
+	GameInformation* info = dynamic_cast<GameInformation*>(this->gui.get());
+	Buffs* buff = dynamic_cast<Buffs*>(this->gui.get());
 	if (menu != nullptr)
 	{
 		menu->update(this->dt);
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
 		{
 			if (this->state == pauseMenu)
@@ -208,7 +211,7 @@ void Game::updateGui()
 				{
 				case 0:
 					this->state = game;
-					this->gui = std::make_unique<GUI>(this->character->getHealth(),
+					this->gui = std::make_unique<GameInformation>(this->character->getHealth(),
 						this->character->getPoints(),
 						this->character->getLevel());
 					break;
@@ -218,11 +221,10 @@ void Game::updateGui()
 					break;
 				case 2:
 					this->window->close();
-				default:
-					break;
 				}
+
 			}
-			if (this->state == mainMenu)
+			else if (this->state == mainMenu)
 			{
 				switch (menu->getOption())
 				{
@@ -232,19 +234,45 @@ void Game::updateGui()
 					break;
 				case 1:
 					this->window->close();
-				default:
-					break;
 				}
 			}
 		}
 	}
-	else
+	else if (info != nullptr) 
 	{
-		this->gui->update(this->character->getHealth(),
-			this->character->getPoints(),
-			this->character->getLevel());
+	info->update(this->character->getHealth(),
+		this->character->getPoints(),
+		this->character->getLevel());	
 	}
-
+	else if (buff != nullptr)
+	{
+		buff->update(this->dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && this->state == buffState)
+		{
+			switch (buff->getOption())
+			{
+			case 0:
+				this->character->velocityBuff();
+				break;
+			case 1:
+				this->character->setHealthPlus(1);
+				break; 
+			case 2:
+				this->character->damageBuff();
+				break; 
+			case 3:
+				this->character->attackSpeedBuff();
+				break; 
+			case 4:
+				this->character->bulletBuff();
+				break;
+			case 5:
+				for (auto& i : this->entities)
+					i->expandRadiusCircle();
+				break;
+			}
+		}
+	}
 }
 
 Game::Game()

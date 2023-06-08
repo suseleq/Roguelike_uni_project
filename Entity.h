@@ -40,7 +40,7 @@ public:
 	virtual ~Entity();
 
 	//Setters
-
+	void expandRadiusCircle();
 	void setIsMoving(bool moving);
 	void setHealthPlus(int health_);
 	virtual void setHealthMinus(int health_);

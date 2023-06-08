@@ -75,6 +75,12 @@ void Entity::setDamage(int damage_)
 	this->damage += damage_;
 }
 
+void Entity::expandRadiusCircle()
+{
+	//expanding radius of circle
+	this->circle->setRadius(this->circle->getRadius() * 1.1f);
+}
+
 void Entity::setIsMoving(bool moving)
 {
 	//set moving
@@ -168,9 +174,10 @@ void Entity::render(sf::RenderTarget& target)
 	}
 	
 	target.draw(*this);
+	/*
 	if (this->hitbox != nullptr)
 	{
 		this->hitbox->render(target);
 	}
-	
+	*/
 }

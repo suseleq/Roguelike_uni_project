@@ -1,10 +1,8 @@
 Do zrobienia:
 Poprawienie kolizji z kółkami
-Damage od wrogów
-Restart gry
 Balans rozgrywki
 System progresji:
--buffy - losowanie, wybieranie
+-buffy - losowanie
 -spawn wrogow
 
 

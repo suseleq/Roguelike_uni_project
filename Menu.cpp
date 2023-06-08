@@ -44,6 +44,7 @@ void Menu::initVariables()
 Menu::Menu(bool mainMenu)
 {
 	//Init variables and text
+	this->initFont();
 	this->initVariables();
 	this->initText(mainMenu);
 }
@@ -102,9 +103,3 @@ void Menu::update(const float& dt)
 	}
 }
 
-
-int Menu::getOption()
-{
-	//Return current option of menu
-	return this->currentOption;
-}

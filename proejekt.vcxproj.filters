@@ -60,6 +60,12 @@
     <ClCompile Include="MagicBowl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Buffs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInformation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -102,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MagicBowl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

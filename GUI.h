@@ -6,20 +6,27 @@ class GUI
 protected:
 	//Variables
 	std::vector<sf::Text> text;
-	std::vector<sf::Sprite> sprites;
+	std::vector<std::pair<sf::Sprite, int>> sprites;
 	std::unique_ptr<sf::Font> font;
+	std::unique_ptr<sf::Texture> texture;
+	float delayTime;
+	bool changeOption;
+	int currentOption;
+
 
 	//Initialize functions
-	virtual void initText();
 	void initFont();
+	
 
 public:
 	//Constructors / Destructors
 	GUI();
-	~GUI();
+	virtual ~GUI();
 
 	//Public functions
 	virtual void update(const float& dt);
+
+	virtual int getOption() const;
 	
 	virtual void render(sf::RenderTarget& target);
 };
