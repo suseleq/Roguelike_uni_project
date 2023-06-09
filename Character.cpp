@@ -7,13 +7,13 @@ void Character::initStats()
 {
 	//Initialize stats
 	this->canAttack = false;
-	this->health = 3;
-	this->cooldownAttack = 250.f;
-	this->maxCooldownAttack = 250.f;
+	this->health = 5;
+	this->cooldownAttack = 100.f;
+	this->maxCooldownAttack = 100.f;
 	this->velocity = 175.f;
 	this->damage = 1;
 	this->additionalBullets = 0;
-	this->randomDirection = std::uniform_real_distribution<float>(-1.f, 1.f);
+	this->randomDirection = std::uniform_real_distribution<float>(-2.f, 2.f);
 	this->points = 0;
 	this->level = 1;
 	this->experience = 0;
@@ -55,6 +55,9 @@ void Character::initAnimations()
 
 void Character::moving(const float& dt)
 {	
+	//Update movement of character
+
+	//checking if key is pressed
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
@@ -108,16 +111,19 @@ Character::~Character()
 
 void Character::setScreenBounds(const sf::FloatRect& bounds)
 {
+	//Setting bounds of screen
 	this->screenBounds = bounds;
 }
 
 int Character::getLevel()
 {
+	//getting level of character
 	return this->level;
 }
 
 void Character::setHealthMinus(int health_)
 {
+	//substract value of health
 	if (this->immuneTimer >= this->maxImmuneTime)
 	{
 		this->health -= health_;
@@ -129,21 +135,25 @@ void Character::setHealthMinus(int health_)
 
 void Character::damageBuff()
 {
+	//buff of damage character
 	this->damage++;
 }
 
 void Character::velocityBuff()
 {
-	this->velocity += this->velocity * 0.1;
+	//buff of velocity character
+	this->velocity += this->velocity * 0.1f;
 }
 
 void Character::attackSpeedBuff()
 {
-	this->maxCooldownAttack -= this->maxCooldownAttack * 0.25;
+	//buff cooldown of attack
+	this->maxCooldownAttack -= this->maxCooldownAttack * 0.25f;
 }
 
 void Character::bulletBuff()
 {
+	//add additional bullet
 	this->additionalBullets++;
 }
 
@@ -152,11 +162,13 @@ void Character::bulletBuff()
 
 bool Character::newLevel() const
 {
+	//return true if character get levelup
 	return this->experience >= this->nextLevelExp;
 }
 
 void Character::levelUp()
 {
+	//update level and experience of character
 	this->level++;
 	this->experience = 0;
 	this->nextLevelExp = this->calulculateExp();
@@ -164,13 +176,21 @@ void Character::levelUp()
 
 void Character::addExperience()
 {
+	//add experience of character
 	this->experience++;
 }
 
 void Character::circleIntersection(const sf::FloatRect& bounds)
 {
+	//checking intersection with circle
 
-	if (this->hitbox->getGlobalBounds().intersects(bounds))
+	//getting vector beetwen character and circle
+	sf::Vector2f v((this->getPosition().x + this->getGlobalBounds().width / 2) - (bounds.left + bounds.height / 2),
+		(this->getPosition().y + this->getGlobalBounds().height / 2) - (bounds.top + bounds.height / 2));
+	//calculate distance between character and center of circle
+	float distance = sqrt(pow(v.x, 2) + pow(v.y, 2));
+	//checking if character is in circle range
+	if (distance <= bounds.height / 2)
 	{
 		this->canAttack = true;
 	}
@@ -178,24 +198,31 @@ void Character::circleIntersection(const sf::FloatRect& bounds)
 
 void Character::addPoints(int points_)
 {
+	//add points of character
 	this->points += points_;
 }
 
 void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr<Bullet>>& bullets)
 {
+	//making attack
+
+	//checking if character can attack
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->cooldownAttack >= this->maxCooldownAttack && this->canAttack) 
 	{
+		//creating bullet and emplace to vector of bullets
 		sf::Vector2f direction = this->normalizeVector(directionMouse);
 		std::unique_ptr<Bullet> bullet(new Bullet(this->damage, 150.f, false, direction));
 		bullet->setPosition(this->getPosition().x + this->getGlobalBounds().width / 2, this->getPosition().y + this->getGlobalBounds().height / 2);
 		bullets.emplace_back(std::move(bullet));
+		
+		//creating additional bullets and emplacing to vector of bullets
 		for (size_t i = 0; i < this->additionalBullets; i++)
 		{
-			std::unique_ptr<Bullet> bullet(new Bullet(this->damage, 150.f, false, this->normalizeVector(sf::Vector2f(this->randomDirection(rd), this->randomDirection(rd)))));
+			std::unique_ptr<Bullet> bullet(new Bullet(this->damage, 150.f, false, sf::Vector2f(this->randomDirection(rd), this->randomDirection(rd))));
 			bullet->setPosition(this->getPosition().x + this->getGlobalBounds().width / 2, this->getPosition().y + this->getGlobalBounds().height / 2);
 			bullets.emplace_back(std::move(bullet));
 		}
-		
+		//reseting cooldown of attack
 		this->cooldownAttack = 0.f;
 	}
 }
@@ -203,22 +230,28 @@ void Character::attack(sf::Vector2f& directionMouse, std::vector<std::unique_ptr
 
 void Character::update(const float& dt)
 {
+
 	this->canAttack = false;
+
 	if (this->immuneTimer < this->maxImmuneTime)
 	{
+		//update immune time after getting damage
 		this->immuneTimer += 100 * dt;
 	}
 	if(this->cooldownAttack < this->maxCooldownAttack)
 	{
+		//update cooldown of attack
 		this->cooldownAttack += 100 * dt;
 	}
 
+	//update moving of character
 	this->moving(dt);
 	if (this->isMoving)
 		this->animations["RUN"]->makeAnimation(dt);
 	else
 		this->animations["IDLE"]->makeAnimation(dt);
 
+	//updating hitbox and circle
 	this->hitbox->uptade();
 	this->circle->uptade();
 }

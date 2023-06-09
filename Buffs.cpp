@@ -9,22 +9,23 @@ void Buffs::initSprites(const std::vector<int>& drawnBuffs)
 	this->texture->loadFromFile("./Textures/buffs.png");
 	this->sprites = std::vector<std::pair<sf::Sprite, int >>(3);
 	
-	//setting position of sprites, and icon of buff
-	float x{ 300 }, y{ 300 };
+	//setting position of sprites, and textures
+	float x{ 200 }, y{ 350 };
 	for (size_t i = 0; i < 3; i++)
 	{
 		this->sprites[i].first.setTexture(*this->texture);
-		this->sprites[i].first.setTextureRect(sf::IntRect(32 * drawnBuffs[i], 0, 32, 32));
-		this->sprites[i].first.setScale(2.f, 2.f);
+		this->sprites[i].first.setTextureRect(sf::IntRect(16 * drawnBuffs[i], 0, 16, 16));
+		this->sprites[i].first.setScale(10.f, 10.f);
 		this->sprites[i].first.setPosition(x, y);
 		this->sprites[i].second = drawnBuffs[i];
-		y += 150.f;
+		x += 200.f;
 	}
-	this->sprites[0].first.setScale(3.f, 3.f);
+	this->sprites[0].first.setScale(12.f, 12.f);
 }
 
 void Buffs::initVariables()
 {
+	//init options
 	this->delayTime = 0.f;
 	this->changeOption = true;
 	this->currentOption = 0;
@@ -34,6 +35,7 @@ void Buffs::initVariables()
 
 Buffs::Buffs(const std::vector<int>& drawnBuffs)
 {
+	//init variables
 	this->initVariables();
 	this->initSprites(drawnBuffs);
 }
@@ -46,12 +48,15 @@ Buffs::~Buffs()
 
 void Buffs::moveRight()
 {
-	//setting the right option
-	if (this->currentOption > 0)
+	//setting current option to right one
+	if (this->currentOption < 2)
 	{
-		this->sprites[this->currentOption].first.setScale(2.f, 2.f);
-		this->currentOption--;
-		this->sprites[currentOption].first.setScale(3.f, 3.f);
+		//make default scale of prievous option
+		this->sprites[this->currentOption].first.setScale(10.f, 10.f);
+		//setting current option
+		this->currentOption++;
+		this->sprites[currentOption].first.setScale(12.f, 12.f);
+		//reseting delay of changing option
 		this->changeOption = false;
 		this->delayTime = 0.f;
 	}
@@ -59,12 +64,15 @@ void Buffs::moveRight()
 
 void Buffs::moveLeft()
 {
-	//setting the bottom option
-	if (this->currentOption < 2)
+	//setting current option to left one 
+	if (this->currentOption > 0)
 	{
-		this->sprites[this->currentOption].first.setScale(2.f, 2.f);
-		this->currentOption++;
-		this->sprites[currentOption].first.setScale(3.f, 3.f);
+		//make dafault scale of prievous option 
+		this->sprites[this->currentOption].first.setScale(10.f, 10.f);
+		//setting current option
+		this->currentOption--;
+		this->sprites[currentOption].first.setScale(12.f, 12.f);
+		//reseting delay of changing option
 		this->changeOption = false;
 		this->delayTime = 0.f;
 	}
@@ -72,6 +80,7 @@ void Buffs::moveLeft()
 
 int Buffs::getOption() const
 {
+	//getting of chosen buff 
 	return this->sprites[this->currentOption].second;
 }
 
@@ -88,7 +97,7 @@ void Buffs::update(const float& dt)
 	}
 
 	//Update current option
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && this->changeOption)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && this->changeOption)
 	{
 		this->moveRight();
 	}

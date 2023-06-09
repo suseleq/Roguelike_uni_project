@@ -29,6 +29,7 @@ void Bullet::initHitbox()
 Bullet::Bullet(int damage_, float velocity_, bool enemy_, const sf::Vector2f& direction_)
 	: damage(damage_), velocity(velocity_), enemy(enemy_), direction(direction_)
 {
+	//initialize variables
 	this->initTexture(enemy);
 	this->initHitbox();
 }
@@ -53,11 +54,13 @@ const bool Bullet::getEnemyBullet() const
 
 const int Bullet::getDamage() const
 {
+	//getting damege of bullet
 	return this->damage;
 }
 
 void Bullet::setDamage(int damage_)
 {
+	//setting damage of bullet
 	this->damage = damage_;
 }
 

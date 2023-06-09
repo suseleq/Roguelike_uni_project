@@ -43,10 +43,13 @@ private:
 	std::random_device rd;
 	std::uniform_real_distribution <float> randomAngle;
 
+	std::map <std::string, float> spawningEnmyTimer;
+
 	//init functions
 	void initWindow();
 	void initGame();
 	void startGame();
+	void initBuffs();
 
 	//Spawn enemy functions
 	sf::Vector2f randomPosition();
@@ -54,9 +57,8 @@ private:
 	void spawnGhost(const std::string& type);
 	void spawnSkeleton();
 
-
-
 	//update functions
+	void updateSpawningEnemies();
 	void updateCharacter();
 	void updateEntities();
 	void updateBullets();

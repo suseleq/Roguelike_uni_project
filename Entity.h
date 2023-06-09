@@ -36,7 +36,6 @@ protected:
 public:
 	//Constructors / Destructors
 	Entity();
-	Entity(const std::string& path);
 	virtual ~Entity();
 
 	//Setters

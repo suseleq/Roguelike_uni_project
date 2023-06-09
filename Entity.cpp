@@ -31,6 +31,8 @@ void Entity::initAnimations()
 
 }
 
+//Constructors / Destructors
+
 Entity::Entity()
 {
 	//Initialize variables
@@ -38,17 +40,6 @@ Entity::Entity()
 	this->initTexture();
 	this->initHitbox();
 	this->initAnimations();
-}
-
-//Constructors / Destructors
-
-Entity::Entity(const std::string& path)
-{
-	this->initStats();
-	this->initHitbox();
-	this->texture = std::make_unique<sf::Texture>();
-	this->texture->loadFromFile("./Textures/" + path + ".png");
-	this->setTexture(*this->texture);
 }
 
 Entity::~Entity()
@@ -78,7 +69,8 @@ void Entity::setDamage(int damage_)
 void Entity::expandRadiusCircle()
 {
 	//expanding radius of circle
-	this->circle->setRadius(this->circle->getRadius() * 1.1f);
+	if(this->circle != nullptr)
+		this->circle->setRadius(this->circle->getRadius() * 1.1f);
 }
 
 void Entity::setIsMoving(bool moving)
@@ -140,6 +132,7 @@ sf::FloatRect Entity::getHitboxBounds() const
 
 sf::Vector2f Entity::normalizeVector(const sf::Vector2f& direction)
 {
+	//calculate of normalized vector
 	sf::Vector2f result(direction.x - this->getPosition().x - this->getGlobalBounds().width / 2,
 		direction.y - this->getPosition().y - this->getGlobalBounds().height / 2);
 	float length = sqrt(pow(result.x, 2) + pow(result.y, 2));

@@ -1,12 +1,6 @@
 Do zrobienia:
-Poprawienie kolizji z kółkami
-Balans rozgrywki
-System progresji:
--buffy - losowanie
--spawn wrogow
 
 
 Jak zostanie czas
 knockback
-lepsza estetyka gry/kodu
 Animowanie respienia, otrzymywania obrazen, smierci

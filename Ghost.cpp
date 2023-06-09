@@ -41,7 +41,7 @@ void Ghost::initHitbox()
 {
 	//initialize hitbox
 	this->hitbox = std::make_unique<Hitbox>(*this, 32, 28, 18, 31);
-	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 40);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 70);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 50));
 }
 

@@ -25,7 +25,7 @@ void Slime::initHitbox()
 {
 	//Initialize hitbox and circle
 	this->hitbox = std::make_unique<Hitbox>(*this, 10, 18, 24, 14);
-	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 30);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 50);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 50));
 }
 

@@ -4,7 +4,7 @@
 void MagicBowl::initStats()
 {
 	//initialize circle
-	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 110);
+	this->circle = std::make_unique<Circle>(*this, this->getGlobalBounds().width, this->getGlobalBounds().height, 130);
 	this->circle->setFillColor(sf::Color(195, 255, 200, 50));
 }
 

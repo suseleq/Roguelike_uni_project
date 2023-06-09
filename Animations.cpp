@@ -21,18 +21,21 @@ Animations::~Animations()
 
 void Animations::makeAnimation(const float& dt)
 {
-	//updating frames of animation
+	//updating time of frame
 	this->animationTime += 100.f * dt;
 	if (this->animationTime >= this->maxFrameTime)
 	{
+		//changing frame
 		this->frameCounter++;
 		if (this->frameCounter >= this->maxFrame)
 		{
+			//change to first frame
 			this->frameCounter = 0;
 			this->currentFrame = this->firstFrame;
 		}
 		else
 		{
+			//change to next frame
 			this->currentFrame.left += this->rectStep;
 		}
 		this->sprite.setTextureRect(this->currentFrame);
