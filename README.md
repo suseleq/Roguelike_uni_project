@@ -3,7 +3,7 @@
 
 Project on Structured and object-oriented programming
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot.jpg)
 
 
 
