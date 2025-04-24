@@ -22,12 +22,6 @@ Gameplay revolves around defeating waves of enemies, collecting experience point
 - Programming Language: **C++**
 - Graphics Library: **SFML**
 
-The project is designed to apply the principles of structured and object-oriented programming through the implementation of a game with clean code architecture and well-organized class structures.
-
-
-
-
-
 
 ## Demo
 
